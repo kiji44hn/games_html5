@@ -120,7 +120,7 @@ function actFishes(frIndex) {
     // 魚の追加
     if (frIndex % FREQ_NEW_FISH == 0 && fishes.length < 40) {
         // 魚の種類を決定
-        var type = random(FISH_TYPES);
+        var type = randomS(FISH_TYPES);
         var f = new Fish(type);
         fishes.push(f);
     }
@@ -185,8 +185,19 @@ function drawChars(frIndex) {
     for (var i = 0; i < fishes.length; i++) {
         var f = fishes[i];
         var ch = f.type + frIndex & 2;
-        ctx.drawImage(images[pl], player.x, player.y);
+        ctx.drawImage(images[ch], f.x, f.y);
     }
+
+    // ヤリを描画
+    for (var i = 0; i < yariList.length; i++) {
+        var yari = yariList[i];
+        ctx.drawImage(images[T_YARI], yari.x, yari.y);
+    }
+
+    // プレイヤーを描画
+    var pl = frIndex % 2;
+    if (isGameOver) pl += T_HIT;
+    ctx.drawImage(images[pl], player.x, player.y);
 }
 
 // 背景の初期化
