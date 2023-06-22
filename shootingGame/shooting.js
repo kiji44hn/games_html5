@@ -27,10 +27,10 @@ var CHAR_FILES = [ // キャラクター画像一覧
 var T_PLAYER = 0; 
 var T_YARI = 10;
 var T_HIT = 8;
-var T_SARA = 2;
+var T_SABA = 2;
 var T_KURAGE = 4;
 var T_SAME = 6;
-var FISH_TYPES = [T_SARA, T_KURAGE, T_SAME];
+var FISH_TYPES = [T_SABA, T_KURAGE, T_SAME];
 var DIR_TABLE = [ // 方向テーブルの定義
    {x:0,y:0},  // 移動なし
    {x:-1,y:0}, {x:0,y:-1}, // 左, 下
@@ -39,9 +39,9 @@ var DIR_TABLE = [ // 方向テーブルの定義
 var back = {};  // 背景描画用のオブジェクト
 var ctx; // 描画用コンテキスト
 var frame = { index:0, time:0 }; // フレーム管理用
-var images = {}; // キャラクター画像の保存用
-var fishes = {}; // 魚を管理するデータ
-var yariList = {}; // ヤリを管理するデータ
+var images = []; // キャラクター画像の保存用
+var fishes = []; // 魚を管理するデータ
+var yariList = []; // ヤリを管理するデータ
 var player; // プレイヤーオブジェクト
 var score = 0; // スコア
 var isGameOver = false;
@@ -109,6 +109,13 @@ function redraw() {
 }
 
 // 毎フレーム実行される関数
+function onFrame(frameIndex) {
+    drawBack();
+    drawChars(frameIndex);
+    actFishes(frameIndex);
+    actPlayer(frameIndex);
+}
+
 function actFishes(frIndex) {
     // 魚の追加
     if (frIndex % FREQ_NEW_FISH == 0 && fishes.length < 40) {
@@ -201,7 +208,7 @@ function drawBack() {
     var blocks = back.blocks;
     for (var i = 0; i < blocks.length; i++) {
         back.ctx.drawImage(
-            blocks[i], i * BACK_W, 0
+            back.images[blocks[i]], i * BACK_W, 0
         );
     }
     blocks.push(blocks.shift());
@@ -276,7 +283,7 @@ function Fish(type) {
     // 魚ごとに異なるパラメータをセット
     this.type = type;
     switch (type) {
-        case T_SARA:
+        case T_SABA:
             this.move = this.moveAji;
             this.score = 3;
             break;
@@ -331,7 +338,7 @@ Fish.prototype.moveKuraken = function () {
 
 Fish.prototype.moveShark = function () {
     this.x -= 12;
-    this.y += (player.y < this.y > 0) ? 3 : -3;
+    this.y += (player.y - this.y > 0) ? 3 : -3;
 };
 
 Fish.prototype.waitHitAnim = function () {
