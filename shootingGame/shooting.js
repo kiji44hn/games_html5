@@ -46,12 +46,12 @@ var player; // プレイヤーオブジェクト
 var score = 0; // スコア
 var isGameOver = false;
 var animID = 0;
-var backCV = document.querySelector(".backCV");
-var gameCV = document.querySelector(".gameCV");
-var msgBoxs = document.querySelector("#msgBox");
 
 // HTMLの初期化処理
 window.onload = function() {
+    var backCV = document.querySelector("#backCV");
+    var gameCV = document.querySelector("#gameCV");
+    var msgBoxs = document.querySelector("#msgBox");
     // レイヤーの重ね合わせの順序を設定
     backCV.style.zIndex = 10;
     gameCV.style.zIndex = 11;
